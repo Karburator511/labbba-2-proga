@@ -2,12 +2,15 @@
 #include <cmath>
 #include <iomanip>
 #include <cstring>
+#include <locale>
 
 bool isPrime(int n) {
     if (n < 2) return false;
     if (n == 2) return true;
     if (n % 2 == 0) return false;
-    for (int i = 3; i <= sqrt(n); i += 2) {
+
+    int limit = static_cast<int>(sqrt(n));
+    for (int i = 3; i <= limit; i += 2) {
         if (n % i == 0) return false;
     }
     return true;
@@ -18,6 +21,8 @@ bool isPowerOfTwo(int n) {
 }
 
 int main(int argc, char* argv[]) {
+    std::setlocale(LC_ALL, "Russian");
+
     bool isHuman = false;
     if (argc <= 1 || strcmp(argv[1], "false") != 0) {
         isHuman = true;
@@ -40,26 +45,15 @@ int main(int argc, char* argv[]) {
         std::cin >> num;
 
         if (isPrime(num)) {
-            if (isHuman) std::cout << "Простое число: ";
             std::cout << num << std::endl;
         }
 
         sum += num;
-
         if (num > maxNum) maxNum = num;
         if (num < minNum) minNum = num;
-
-        if (num % 5 == 0) {
-            ++countMultiplesOfFive;
-        }
-
-        if (isPowerOfTwo(num)) {
-            ++countPowersOfTwo;
-        }
-
-        if (i >= 2 && num > (prev1 + prev2)) {
-            ++countExceedSumOfTwoPrev;
-        }
+        if (num % 5 == 0) ++countMultiplesOfFive;
+        if (isPowerOfTwo(num)) ++countPowersOfTwo;
+        if (i >= 2 && num > (prev1 + prev2)) ++countExceedSumOfTwoPrev;
 
         prev2 = prev1;
         prev1 = num;
